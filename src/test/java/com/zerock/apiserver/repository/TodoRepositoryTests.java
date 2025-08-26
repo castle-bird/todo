@@ -34,15 +34,17 @@ public class TodoRepositoryTests {
     public void testInsert() {
         // 추가
 
-        Todo todo = Todo.builder()
-                .title("Title")
-                .content("Content...")
-                .dueDate(LocalDate.of(2023, 12, 30))
-                .build();
+        for (int i = 0; i < 100; i++) {
+            Todo todo = Todo.builder()
+                    .title("Title..." + i)
+                    .content("Content..." + i)
+                    .dueDate(LocalDate.of(2023, 12, 30))
+                    .build();
 
-        Todo result = todoRepository.save(todo);
+            Todo result = todoRepository.save(todo);
+        }
 
-        log.info("RESULT = {}", result);
+        //log.info("RESULT = {}", result);
     }
 
     @Test
@@ -81,5 +83,20 @@ public class TodoRepositoryTests {
     public void testPaging() {
         // 페이지 번호는 0부터
         Pageable pageable = PageRequest.of(0, 10, Sort.by("tno").descending());
+
+        // findAll에 pageable타입 넣어주면 무조건 리턴 타입이 Page타입이다.
+        Page<Todo> result = todoRepository.findAll(pageable);
+
+        // 카운트
+        log.info("getTotalElements = {}", result.getTotalElements());
+
+        // 전체 목록
+        log.info("getContent = {}", result.getContent());
+    }
+
+    // 쿼리dsl 테스트
+    @Test
+    public void testSearch1() {
+        todoRepository.search1();
     }
 }
