@@ -66,6 +66,8 @@ public class TodoServiceImpl implements TodoService {
         // JPA
         Page<Todo> result = todoRepository.search1(pageRequestDTO);
 
+
+
         // Todo List -> TodoDTO List
         List<TodoDTO> dtoList = result
                 .get()
