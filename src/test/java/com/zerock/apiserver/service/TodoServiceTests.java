@@ -1,5 +1,6 @@
 package com.zerock.apiserver.service;
 
+import com.zerock.apiserver.dto.PageRequestDTO;
 import com.zerock.apiserver.dto.TodoDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -38,5 +39,12 @@ public class TodoServiceTests {
         TodoDTO todoDto = todoService.get(tno);
 
         todoService.modify(todoDto);
+    }
+
+    @Test
+    public void testGetList() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(11).build();
+
+        log.info(todoService.getList(pageRequestDTO));
     }
 }

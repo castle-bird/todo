@@ -4,11 +4,9 @@ package com.zerock.apiserver.repository.search;
 import com.querydsl.jpa.JPQLQuery;
 import com.zerock.apiserver.domain.QTodo;
 import com.zerock.apiserver.domain.Todo;
+import com.zerock.apiserver.dto.PageRequestDTO;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -25,7 +23,7 @@ public class TodoSearchImpl extends QuerydslRepositorySupport implements TodoSea
     }
 
     @Override
-    public Page<Todo> search1() {
+    public Page<Todo> search1(PageRequestDTO pageRequestDTO) {
 
         log.info("Search1.....................................");
 
@@ -38,21 +36,25 @@ public class TodoSearchImpl extends QuerydslRepositorySupport implements TodoSea
         JPQLQuery<Todo> query = from(todo);
 
         // 위 방법 사용시, 조회시 객체 형식으로 접근 가능
-        query.where(todo.title.contains("1"));
+//        query.where(todo.title.contains("1"));
 
         // 페이징 작업
-        Pageable pageable = PageRequest.of(1, 10, Sort.by("tno").descending());
+        Pageable pageable = PageRequest.of(
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                Sort.by("tno").descending());
+
         this.getQuerydsl().applyPagination(pageable, query);
 
-        
+
         // 쿼리dsl은 fetch 전에 작업은 쿼리문을 쌓아 놓는 느낌이다
         // fetch를 해야만 쿼리문이 전체 호출이 된다
         // query.where(todo.title.contains("1"));로 타이틀에 1이 들어가는 애들을 찾고
         // Pageable pageable = PageRequest.of(1, 10, Sort.by("tno").descending());
         //this.getQuerydsl().applyPagination(pageable, query); 를 이용해 정렬하고 등등 작업을 쌓아간다
-        query.fetch(); // 목록 데이터
-        query.fetchCount(); // 갯수
+        List<Todo> list = query.fetch(); // 목록 데이터
+        long total = query.fetchCount(); // 갯수
 
-        return null;
+        return new PageImpl<>(list, pageable, total);
     }
 }

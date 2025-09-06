@@ -1,6 +1,8 @@
 package com.zerock.apiserver.service;
 
 import com.zerock.apiserver.domain.Todo;
+import com.zerock.apiserver.dto.PageRequestDTO;
+import com.zerock.apiserver.dto.PageResponseDTO;
 import com.zerock.apiserver.dto.TodoDTO;
 
 public interface TodoService {
@@ -18,9 +20,10 @@ public interface TodoService {
     // 삭제
     void remove(Long tno);
 
+    PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO);
+
     // 인터페이스에서 기능 만들기 default
     // 매핑 만들어주기
-
     // Entity -> DTO
     default TodoDTO entityToDTO(Todo todo) {
 

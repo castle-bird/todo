@@ -95,8 +95,8 @@ public class TodoRepositoryTests {
     }
 
     // 쿼리dsl 테스트
-    @Test
-    public void testSearch1() {
-        todoRepository.search1();
-    }
+//    @Test
+//    public void testSearch1() {
+//        todoRepository.search1();
+//    }
 }

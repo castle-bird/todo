@@ -1,5 +1,6 @@
 package com.zerock.apiserver.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class PageResponseDTO<E> {
     // 현재 페이지 번호
     private int current;
 
+    @Builder(builderMethodName =  "withAll")
     private PageResponseDTO(List<E> dtoList, PageRequestDTO pageRequestDTO, long total) {
         this.dtoList = dtoList;
         this.pageRequestDTO = pageRequestDTO;
