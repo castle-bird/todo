@@ -36,5 +36,6 @@ public class LocalDateFormatter implements Formatter<LocalDate> {
     *
     * 요약하면 parse()는 요청 바인딩(문자열 → 객체) 시,
     * print()는 응답 직렬화(객체 → 문자열) 시 작동
+    *
     * */
 }
