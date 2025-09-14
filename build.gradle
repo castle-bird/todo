@@ -58,17 +58,17 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-compileJava {
-    options.annotationProcessorGeneratedSourcesDirectory = file("build/generated/querydsl")
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs += 'build/generated/querydsl'
-        }
-    }
-}
+//
+//compileJava {
+//    options.annotationProcessorGeneratedSourcesDirectory = file("build/generated/querydsl")
+//}
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs += 'build/generated/querydsl'
+//        }
+//    }
+//}
 
 compileJava.dependsOn('clean')
