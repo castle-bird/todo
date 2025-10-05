@@ -1,13 +1,19 @@
 package com.zerock.apiserver.repository;
 
 import com.zerock.apiserver.domain.Product;
+import com.zerock.apiserver.dto.PageRequestDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,16 +25,20 @@ public class ProductRepositoryTests {
 
     @Test
     public void testInert() {
-        Product product = Product.builder()
-                .pname("Test ")
-                .pdesc("Test Desc")
-                .price(1000)
-                .build();
 
-        product.addImageString(UUID.randomUUID() + "_" + "IMAGE1.jpg");
-        product.addImageString(UUID.randomUUID() + "_" + "IMAGE2.jpg");
+        for (int i = 0; i < 10; i++) {
+            Product product = Product.builder()
+                    .pname("Test ")
+                    .pdesc("Test Desc")
+                    .price(1000)
+                    .build();
 
-        productRepository.save(product);
+            product.addImageString(UUID.randomUUID() + "_" + "IMAGE1.jpg");
+            product.addImageString(UUID.randomUUID() + "_" + "IMAGE2.jpg");
+
+            productRepository.save(product);
+        }
+
     }
 
     @Transactional
@@ -77,4 +87,21 @@ public class ProductRepositoryTests {
 
         productRepository.save(product);
     }
+
+    @Test
+    public void testList() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+        Page<Object[]> result = productRepository.selectList(pageable);
+
+        result.getContent().forEach(arr -> log.info(Arrays.toString(arr)));
+    }
+
+    @Test
+    public void testSearch() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().build();
+
+        productRepository.searchList(pageRequestDTO);
+    }
+
+
 }
