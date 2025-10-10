@@ -57,8 +57,6 @@ public class ProductController {
 
     @PutMapping("/{pno}")
     public Map<String, String> modify(@PathVariable("pno") Long pno, ProductDTO productDTO) {
-        productDTO.setPno(pno);
-
         // old product
         ProductDTO oldProductDTO = productService.get(pno);
 
